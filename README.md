@@ -30,12 +30,11 @@ Here are the steps to run the project locally.
 ```
 
 3. Add the required static folder for Capacitor
+   > It will create an /out folder in your root directory, which includes the required index.html for Capacitor
 
 ```bash
  npm run static
 ```
-
-> It will create an /out folder in your root directory, which includes the required index.html for Capacitor
 
 4. Add your local server IP address the environment variable sample and rename it to .env.local
    <br />
