@@ -1,0 +1,57 @@
+font-face {
+  font-family: "GilroyLight";
+  src: url("/assets/fonts/gilroy-light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+font-face {
+  font-family: "GilroyExtraBold";
+  src: url("/assets/fonts/gilroy-extrabold.otf") format("opentype");
+  font-weight: bolder;
+  font-style: normal;
+}
+
+.flip-horizontal {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.hero-overlay {
+  background: rgb(251, 251, 251);
+  background: linear-gradient(
+    90deg,
+    rgba(251, 251, 251, 0.00043767507002800965) 0%,
+    rgba(0, 8, 20, 0.5718662464985995) 100%
+  );
+}
+
+.gradient_1 {
+  background: linear-gradient(-45deg, #23d5ab, #5297fd, #b38bfc);
+  background-size: 200% 200%;
+  animation: gradient 6s ease infinite;
+}
+
+.gradient_2 {
+  background: linear-gradient(-45deg, #5297fd, #b38bfc, #23d5ab);
+  background-size: 200% 200%;
+  animation: gradient 6s ease infinite;
+}
+
+.gradient_3 {
+  background: linear-gradient(-45deg, #b38bfc, #23d5ab, #5297fd);
+  background-size: 200% 200%;
+  animation: gradient 6s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -1,0 +1,13 @@
+# testing
+/coverage
+
+# next.js
+/.next/
+/.vercel/
+
+# production
+/build
+
+# supabase - database
+**/supabase
+/types/supabase-types.ts

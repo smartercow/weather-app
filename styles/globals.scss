@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+font-face {
+  font-family: "GilroyLight";
+  src: url("/assets/fonts/gilroy-light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+font-face {
+  font-family: "GilroyExtraBold";
+  src: url("/assets/fonts/gilroy-extrabold.otf") format("opentype");
+  font-weight: bolder;
+  font-style: normal;
+}
+
+.gilroy-light {
+  font-family: "GilroyLight", sans-serif;
+}
+
+.gilroy-extrabold {
+  font-family: "GilroyExtraBold", sans-serif;
+}
+
+@layer components {
+  .hover-animation {
+    @apply transition-all duration-300;
+  }
+
+  .bottom-container {
+    @apply h-full max-h-[34vh] min-h-max;
+  }
+
+  .b_c {
+    @apply max-h-[38vh];
+  }
+
+  .d3_box {
+    @apply w-full space-y-1 rounded-3xl px-3 py-2;
+  }
+
+  .forecast-heading {
+    @apply h-5 text-center text-xl text-main-gray;
+  }
+
+  .now-list {
+    @apply bottom-container;
+    ul {
+      @apply flex justify-between;
+      li {
+        @apply whitespace-nowrap text-sm font-normal;
+      }
+      li:first-child {
+        @apply text-main-gray;
+      }
+      li:last-child {
+        @apply w-20 text-center font-semibold;
+      }
+    }
+  }
+
+  .footer-buttons {
+    @apply px-7 pb-0.5 text-2xl transition-all duration-150;
+  }
+
+  .footer-buttons-active {
+    @apply border-b-4 border-white text-white;
+  }
+}
