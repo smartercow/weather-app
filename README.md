@@ -19,22 +19,23 @@ Here are the steps to run the project locally.
 
 1. Clone the repository
 
-```bash
- git clone https://github.com/smartercow/weather-app.git
-```
+   ```bash
+   git clone https://github.com/smartercow/weather-app.git
+   ```
 
 2. Install dependencies
 
-```bash
- npm i
-```
+   ```bash
+   npm i
+   ```
 
 3. Add the required static folder for Capacitor
+
    > It will create an /out folder in your root directory, which includes the required index.html for Capacitor
 
-```bash
- npm run static
-```
+   ```bash
+   npm run static
+   ```
 
 4. Add your local server IP address the environment variable sample and rename it to .env.local
    <br />
@@ -48,15 +49,15 @@ Here are the steps to run the project locally.
    ```
 5. Execute Android platform
 
-```bash
- npx cap add android
-```
+   ```bash
+   npx cap add android
+   ```
 
 6. Open project in Android Studio
 
-```bash
- npx cap open android
-```
+   ```bash
+   npx cap open android
+   ```
 
 7. Sync the project - for live reload & gradle changes
    <br />
