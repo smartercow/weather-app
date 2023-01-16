@@ -37,9 +37,10 @@ Here are the steps to run the project locally.
    npm run static
    ```
 
-4. Add your local server IP address in the environment variable sample and rename it to .env.local
+4. Add your local server IP address in the development environment variable with port 3000 at the end of URL
    <br />
-   To get your local IP address on Windows run:
+   > It should look something like this: NEXT_PUBLIC_URL=http://12.345.67.89:3000 > <br />
+   > To get your local IP address on Windows run:
    ```bash
    ipconfig /all
    ```
