@@ -29,7 +29,7 @@ Here are the steps to run the project locally.
    npm i
    ```
 
-3. Add the required static folder for Capacitor
+3. Add the static folder
 
    > It will create an /out folder in your root directory, which includes the required index.html for Capacitor
 
