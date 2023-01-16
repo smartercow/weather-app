@@ -11,7 +11,12 @@
 
 - See current, hourly & daily forecast in your current location
 - See min/max. temperatur, humidity, pressure and wind speed
-- Search forecast of any city, region or country
+- Search weather forecast of any city, region or country
+
+## Notes 📝
+
+- Language in Danish 🇩🇰
+- OpenWeatherMap API
 
 ## Development 💻
 
