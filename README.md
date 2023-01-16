@@ -84,7 +84,7 @@ Here are the steps to run the project locally.
 8. Run the project
 
    ```bash
-   npn run dev
+   npm run dev
    ```
 
 9. Open the project in your Android emulator and you set to go :+1:
