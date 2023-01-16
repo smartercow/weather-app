@@ -42,7 +42,7 @@ Here are the steps to run the project locally.
    npm run static
    ```
 
-4. Add your local server IP address in the .env.development with port 3000
+4. Add your local server IP address in the .env.development file with port 3000
    <br />
 
    > It should look something like this: NEXT_PUBLIC_URL=http://12.345.67.89:3000
