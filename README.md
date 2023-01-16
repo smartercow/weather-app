@@ -29,7 +29,7 @@ Here are the steps to run the project locally.
    npm i
    ```
 
-3. Add the static folder
+3. Create build directory
 
    > It will create an /out folder in your root directory, which includes the required index.html for Capacitor
 
@@ -37,7 +37,7 @@ Here are the steps to run the project locally.
    npm run static
    ```
 
-4. Add your local server IP address the environment variable sample and rename it to .env.local
+4. Add your local server IP address in the environment variable sample and rename it to .env.local
    <br />
    To get your local IP address on Windows run:
    ```bash
@@ -72,3 +72,11 @@ Here are the steps to run the project locally.
    ```bash
    npx cap sync android
    ```
+
+8. Run the project
+
+   ```bash
+   npn run dev
+   ```
+
+9. Open the project in your Android emulator and you set to go :+1:
