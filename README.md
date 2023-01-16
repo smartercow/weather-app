@@ -35,9 +35,10 @@ Here are the steps to run the project locally.
  npm run static
 ```
 
-It will create an /out folder in your root directory, which includes the required index.html for Capacitor
+> It will create an /out folder in your root directory, which includes the required index.html for Capacitor
 
 4. Add your local server IP address the environment variable sample and rename it to .env.local
+   <br />
    To get your local IP address on Windows run:
    ```bash
    ipconfig /all
@@ -59,14 +60,15 @@ It will create an /out folder in your root directory, which includes the require
 ```
 
 7. Sync the project - for live reload & gradle changes
+   <br />
    First:
 
-```bash
- npx cap sync
-```
+   ```bash
+   npx cap sync
+   ```
 
-Second:
+   Second:
 
-```bash
- npx cap sync android
-```
+   ```bash
+   npx cap sync android
+   ```
