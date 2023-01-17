@@ -31,9 +31,11 @@ export default function CurrentLocation(): JSX.Element {
   const [daily, setDaily] = useState([]);
   const [hourly, setHourly] = useState([]);
   const [nowData, setNowData] = useState([]);
-  const [viewType, setViewType] = useState<string>("");
   const [myCoords, setMyCoords] = useState<any>();
   const [fetched, setFetched] = useState(false);
+  const [heroDataIn, setHeroDataIn] = useState<boolean>(false);
+
+  const [dayData, setDayData] = useState([]);
 
   const now = forecastState.view === "now";
   const today = forecastState.view === "today";
@@ -76,25 +78,34 @@ export default function CurrentLocation(): JSX.Element {
     }
   }, [fetched]);
 
+  console.log("DAAYDTA", dayData);
+
   return (
     <div>
       {!isLoading && (
         <>
           <Hero
-            dt={currentDate}
             icon={currentIcon}
             temp={currentTemp}
-            minTemp={currentMinTemp}
-            maxTemp={currentMaxTemp}
-            myLocation={myLocation}
+            dayData={dayData}
+            location={myLocation}
             description={currentDescription}
+            heroDataIn={heroDataIn}
+            setHeroDataIn={setHeroDataIn}
             coords={myCoords}
           />
-          <ForecastNav singleView={singleView} setSingleView={setSingleView} />
+          <ForecastNav
+            singleView={singleView}
+            setSingleView={setSingleView}
+            heroDataIn={heroDataIn}
+            setHeroDataIn={setHeroDataIn}
+          />
           {now && <ForecastNow data={nowData} rightNow />}
           {(today || week) && (
             <Forecast
               data={currentForecastView}
+              dayData={dayData}
+              setDayData={setDayData}
               singleView={singleView}
               setSingleView={setSingleView}
             />

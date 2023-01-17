@@ -6,9 +6,7 @@ type ForecastNowProps = {
 };
 
 export default function ForecastNow(props: ForecastNowProps): JSX.Element {
-  const dataIn = props.data;
-  console.log("propsDATATA1111", props.data);
-  console.log("propsDATATA2222", dataIn);
+  const data = props.data;
 
-  return <>{dataIn && <DayForecast data={props.data} rightNow />}</>;
+  return <>{data && <DayForecast data={data} rightNow />}</>;
 }

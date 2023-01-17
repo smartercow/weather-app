@@ -38,7 +38,7 @@ font-face {
   }
 
   .d3_box {
-    @apply w-full space-y-1 rounded-3xl px-3 py-2;
+    @apply w-full space-y-0.5 rounded-3xl px-3 py-2;
   }
 
   .forecast-heading {
@@ -56,9 +56,16 @@ font-face {
         @apply text-main-gray;
       }
       li:last-child {
-        @apply w-20 text-center font-semibold;
+        @apply w-20 pl-4 text-center font-semibold;
       }
     }
+  }
+
+  .toggle-checkbox:checked {
+    @apply right-0 border-green-400;
+  }
+  .toggle-checkbox:checked + .toggle-label {
+    @apply bg-green-400;
   }
 
   .footer-buttons {

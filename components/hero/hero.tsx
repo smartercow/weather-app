@@ -1,26 +1,55 @@
 import { Button } from "@components/ui/button";
 import { HeroIcon } from "@components/ui/hero-icon";
+import { ForecastState } from "@lib/states/forecast";
 import dayjs from "dayjs";
 import Locale from "dayjs/locale/da";
-import { location } from "ionicons/icons";
+import { location as IonLocation } from "ionicons/icons";
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 type HeroProps = {
-  dt?: number;
-  icon?: string;
   temp: number;
-  minTemp?: string;
-  maxTemp?: string;
-  myLocation?: string;
-  description?: string;
+  icon?: string;
   coords?: any;
+  dayData?: any;
+  location?: string;
+  isSearch?: boolean;
+  heroDataIn: boolean;
+  description?: string;
+  setHeroDataIn: (heroDataIn: boolean) => void;
 };
+
+const placeholderImg = "/assets/images/placeholder.png";
 
 export default function Hero(props: HeroProps): JSX.Element {
   const date = dayjs().locale(Locale).format("DD/MMMM");
   const dateToday = date.replace("/", " ");
   const dayName = dayjs().locale(Locale).format("dddd");
+  const forecastState = useRecoilValue(ForecastState);
 
-  const placeholderImg = "/assets/images/placeholder.png";
+  const icon = props.icon;
+  const temp = props.temp;
+  const dayData = props.dayData;
+  const location = props.location;
+  const isSearch = props.isSearch;
+  const description = props.description;
+  const heroDataIn = props.heroDataIn;
+  const setHeroDataIn = props.setHeroDataIn;
+
+  const now = forecastState.view === "now";
+  const today = forecastState.view === "today";
+  const week = forecastState.view === "week";
+
+  useEffect(() => {
+    if (!isSearch && Object.keys(dayData).length > 0) {
+      setHeroDataIn(true);
+    } else {
+      setHeroDataIn(false);
+    }
+  }, [dayData]);
+
+  console.log("DAYDATAHERO", dayData);
+  console.log("HERODATA", heroDataIn);
 
   return (
     <>
@@ -40,40 +69,65 @@ export default function Hero(props: HeroProps): JSX.Element {
           </div>
           <div>
             <h2 className="gilroy-light absolute top-0 left-5 text-lg font-semibold capitalize text-white">
-              {dateToday}, <span className="font-normal">{dayName}</span>
+              {heroDataIn ? (
+                <>
+                  {today && (
+                    <>
+                      {dayjs.unix(dayData.dt).format("HH:mm")} -{" "}
+                      <span className="font-normal normal-case">I dag</span>
+                    </>
+                  )}
+                  {week && (
+                    <>
+                      {dayjs.unix(dayData.dt).format("DD/MM")},{" "}
+                      <span className="font-normal">
+                        {dayjs.unix(dayData.dt).locale(Locale).format("dddd")}
+                      </span>
+                    </>
+                  )}
+                  {now && (
+                    <>
+                      {dateToday} -{" "}
+                      <span className="font-normal">{dayName}</span>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  {dateToday} - <span className="font-normal">{dayName}</span>
+                </>
+              )}
             </h2>
           </div>
           <div className="absolute top-10 right-0 space-y-3 text-right text-white">
             <div className="flex justify-center pl-5">
               <div>
                 <div className="h-14 w-14">
-                  {props.icon && (
+                  {icon && (
                     <ion-img
                       src={
                         !props.icon
                           ? placeholderImg
-                          : `http://openweathermap.org/img/wn/${props.icon}@2x.png`
+                          : `http://openweathermap.org/img/wn/${icon}@2x.png`
                       }
                       alt="OW"
                     />
                   )}
                 </div>
                 <p className="text-center text-base font-semibold">
-                  {props.description}
+                  {description}
                 </p>
               </div>
             </div>
 
             <div className="px-7">
-              <p className="text-5xl font-extrabold">
-                {Math.round(props?.temp)}°
-              </p>
+              <p className="text-5xl font-extrabold">{Math.round(temp)}°</p>
             </div>
-            <div className="flex justify-end gap-1 px-4">
+            <div className="flex justify-end  gap-1 px-4">
               <p className="text-xl font-bold">
-                <ion-icon icon={location} />
+                <ion-icon icon={IonLocation} />
               </p>
-              <p className="text-sm font-medium">{props.myLocation}</p>
+              <p className="text-sm font-medium">{location}</p>
             </div>
           </div>
           <div className="absolute bottom-4 right-0 px-4 text-white">

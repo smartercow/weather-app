@@ -1,12 +1,12 @@
 import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "pg-weather-app",
+  appId: "pg.weather.app",
   appName: "PG Weather App",
   webDir: "out",
   bundledWebRuntime: false,
   server: {
-    url: process.env.NEXT_PUBLIC_URL || "",
+    url: "http://84.238.25.55:3000",
     cleartext: true,
   },
 };

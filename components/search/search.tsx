@@ -78,16 +78,17 @@ export default function Search(): JSX.Element {
     }
   };
 
-  console.log("dataIn", dataIn);
-
   return (
     <main>
       {dataIn && (
         <Hero
           temp={currentTemp}
           icon={currentIcon}
-          myLocation={searchName}
+          location={searchName}
+          isSearch={true}
+          heroDataIn={false}
           description={currentDescription}
+          setHeroDataIn={() => {}}
         />
       )}
 

@@ -7,19 +7,30 @@ import { HeroIcon } from "@components/ui/hero-icon";
 type ForecastNavProps = {
   singleView: boolean;
   setSingleView: (value: boolean) => void;
+  heroDataIn: boolean;
+  setHeroDataIn: (heroDataIn: boolean) => void;
 };
 export default function ForecastNav(props: ForecastNavProps): JSX.Element {
   const [nav, setNav] = useRecoilState(ForecastState);
+
+  const singleView = props.singleView;
+  const setSingleView = props.setSingleView;
+  const setHeroDataIn = props.setHeroDataIn;
 
   const now = nav.view === "now";
   const today = nav.view === "today";
   const week = nav.view === "week";
 
+  const resetOnClick = () => {
+    setSingleView(false);
+    setHeroDataIn(false);
+  };
+
   return (
     <nav className="flex h-12 items-center rounded-b-xl bg-main-black py-3 text-white">
       <div className="w-10 px-2 pt-1">
-        <div hidden={!props.singleView}>
-          <Button onClick={() => props.setSingleView(false)}>
+        <div hidden={!singleView}>
+          <Button onClick={resetOnClick}>
             <HeroIcon iconName="ChevronLeftIcon" className="h-5 text-white" />
           </Button>
         </div>
@@ -33,7 +44,7 @@ export default function ForecastNav(props: ForecastNavProps): JSX.Element {
             )}
             onClick={() => {
               setNav({ view: "now" });
-              props.setSingleView(false);
+              resetOnClick();
             }}
           >
             Lige nu
@@ -45,7 +56,7 @@ export default function ForecastNav(props: ForecastNavProps): JSX.Element {
             )}
             onClick={() => {
               setNav({ view: "today" });
-              props.setSingleView(false);
+              resetOnClick();
             }}
           >
             I dag
@@ -57,7 +68,7 @@ export default function ForecastNav(props: ForecastNavProps): JSX.Element {
             )}
             onClick={() => {
               setNav({ view: "week" });
-              props.setSingleView(false);
+              resetOnClick();
             }}
           >
             Denne uge
