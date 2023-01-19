@@ -11,6 +11,8 @@ import { useRecoilState } from "recoil";
 import { ForecastState } from "@lib/states/forecast";
 import ForecastNow from "@components/forecast/now-forecast";
 import { Geolocation } from "@capacitor/geolocation";
+import LoadingData from "@components/data/loading-data";
+import Footer from "@components/footer/footer";
 
 export default function CurrentLocation(): JSX.Element {
   dayjs.extend(utc);
@@ -49,7 +51,6 @@ export default function CurrentLocation(): JSX.Element {
 
     if (coordinates) {
       setMyCoords(coordinates.coords);
-      console.log("myCoords", myCoords);
       setFetched(true);
     }
   };
@@ -59,7 +60,6 @@ export default function CurrentLocation(): JSX.Element {
 
     if (myCoords) {
       fetchOnecall(myCoords).then((data) => {
-        console.log("data-Onecall", data);
         setHourly(data.hourly);
         setDaily(data.daily);
         setCurrentDate(data.current.data);
@@ -69,7 +69,6 @@ export default function CurrentLocation(): JSX.Element {
       });
 
       fetchWeather(myCoords).then((data) => {
-        console.log("data-weather", data);
         setMyLocation(data.name);
         setNowData(data);
       });
@@ -78,40 +77,50 @@ export default function CurrentLocation(): JSX.Element {
     }
   }, [fetched]);
 
-  console.log("DAAYDTA", dayData);
+  console.log("isNow", now);
+  console.log("currentTemp", currentTemp);
 
   return (
-    <div>
+    <>
       {!isLoading && (
         <>
-          <Hero
-            icon={currentIcon}
-            temp={currentTemp}
-            dayData={dayData}
-            location={myLocation}
-            description={currentDescription}
-            heroDataIn={heroDataIn}
-            setHeroDataIn={setHeroDataIn}
-            coords={myCoords}
-          />
-          <ForecastNav
-            singleView={singleView}
-            setSingleView={setSingleView}
-            heroDataIn={heroDataIn}
-            setHeroDataIn={setHeroDataIn}
-          />
-          {now && <ForecastNow data={nowData} rightNow />}
-          {(today || week) && (
-            <Forecast
+          <section>
+            <Hero
               data={currentForecastView}
-              dayData={dayData}
-              setDayData={setDayData}
+              icon={currentIcon}
+              temp={currentTemp}
+              isNow={now}
+              dayData={now ? nowData : dayData}
+              location={myLocation}
+              description={currentDescription}
+              heroDataIn={heroDataIn}
+              singleView={singleView}
+              setHeroDataIn={setHeroDataIn}
+              coords={myCoords}
+            />
+            <ForecastNav
               singleView={singleView}
               setSingleView={setSingleView}
+              heroDataIn={heroDataIn}
+              setHeroDataIn={setHeroDataIn}
             />
-          )}
+            {now && <ForecastNow data={nowData} rightNow />}
+            {(today || week) && (
+              <Forecast
+                data={currentForecastView}
+                dayData={dayData}
+                setDayData={setDayData}
+                singleView={singleView}
+                setSingleView={setSingleView}
+              />
+            )}
+          </section>
+
+          <Footer />
         </>
       )}
-    </div>
+
+      {isLoading && <LoadingData />}
+    </>
   );
 }

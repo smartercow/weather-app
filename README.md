@@ -42,10 +42,10 @@ Here are the steps to run the project locally.
    npm run static
    ```
 
-4. Add your local server IP address in the .env.development file with port 3000
+4. Add your local server IP address with port in the capacitor.config.ts
    <br />
 
-   > It should look something like this: NEXT_PUBLIC_URL=http://12.345.67.89:3000
+   > It should look something like this = url: "123.456.7.890:3000"
 
    <br />
    To get your local IP address on Windows run:

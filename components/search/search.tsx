@@ -10,6 +10,7 @@ import RowForecast from "@components/forecast/row-forecast";
 import cn from "clsx";
 import Hero from "@components/hero/hero";
 import type { KeyboardEvent } from "react";
+import Footer from "@components/footer/footer";
 
 export default function Search(): JSX.Element {
   dayjs.extend(utc);
@@ -79,55 +80,60 @@ export default function Search(): JSX.Element {
   };
 
   return (
-    <main>
-      {dataIn && (
-        <Hero
-          temp={currentTemp}
-          icon={currentIcon}
-          location={searchName}
-          isSearch={true}
-          heroDataIn={false}
-          description={currentDescription}
-          setHeroDataIn={() => {}}
-        />
-      )}
-
-      <div
-        className={cn(
-          "bg-main-black",
-          dataIn ? "rounded-b-xl py-1" : "m-2 rounded-md py-3"
+    <>
+      <section>
+        {dataIn && (
+          <Hero
+            data={data}
+            temp={currentTemp}
+            icon={currentIcon}
+            location={searchName}
+            isSearch={true}
+            heroDataIn={false}
+            description={currentDescription}
+            setHeroDataIn={() => {}}
+          />
         )}
-      >
-        <div className="flex items-center gap-1 py-2 px-3">
-          <div className="w-full">
-            <input
-              type="text"
-              className="h-8 w-full rounded-md border border-gray-300 bg-main-black px-2 text-sm text-white outline-none"
-              value={inputValue}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Søg efter en by..."
-            />
-          </div>
-          <div className="flex w-10 justify-center pt-1">
-            <Button className="text-xl text-white" onClick={handleSubmit}>
-              <ion-icon icon={searchOutline} />
-            </Button>
+
+        <div
+          className={cn(
+            "bg-main-black",
+            dataIn ? "rounded-b-xl py-1" : "m-2 rounded-md py-3"
+          )}
+        >
+          <div className="flex items-center gap-1 py-2 px-3">
+            <div className="w-full">
+              <input
+                type="text"
+                className="h-8 w-full rounded-md border border-gray-300 bg-main-black px-2 text-sm text-white outline-none"
+                value={inputValue}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                placeholder="Søg efter en by..."
+              />
+            </div>
+            <div className="flex w-10 justify-center pt-1">
+              <Button className="text-xl text-white" onClick={handleSubmit}>
+                <ion-icon icon={searchOutline} />
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-      {dataIn && (
-        <Container className="m-2 pb-3 text-center text-white">
-          <div className="bottom-container overflow-y-scroll scrollbar-hide">
-            <div className="mb-1.5 pt-0.5">
-              <RowForecast data={data[0]} heading />
+        {dataIn && (
+          <Container className="m-2 pb-3 text-center text-white">
+            <div className="bottom-container overflow-y-scroll scrollbar-hide">
+              <div className="mb-1.5 pt-0.5">
+                <RowForecast data={data[0]} heading />
+              </div>
+              {data.slice(0, 12).map((d, i) => {
+                return <RowForecast key={i} data={d} />;
+              })}
             </div>
-            {data.slice(0, 12).map((d, i) => {
-              return <RowForecast key={i} data={d} />;
-            })}
-          </div>
-        </Container>
-      )}
-    </main>
+          </Container>
+        )}
+      </section>
+
+      <Footer />
+    </>
   );
 }

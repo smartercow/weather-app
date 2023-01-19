@@ -1,44 +1,93 @@
 import { Button } from "@components/ui/button";
 import { HeroIcon } from "@components/ui/hero-icon";
 import { ForecastState } from "@lib/states/forecast";
+import { SettingsState } from "@lib/states/settings-state";
 import dayjs from "dayjs";
 import Locale from "dayjs/locale/da";
 import { location as IonLocation } from "ionicons/icons";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 type HeroProps = {
+  data: any;
   temp: number;
   icon?: string;
+  isNow?: boolean;
   coords?: any;
   dayData?: any;
   location?: string;
   isSearch?: boolean;
   heroDataIn: boolean;
+  singleView?: boolean;
   description?: string;
   setHeroDataIn: (heroDataIn: boolean) => void;
 };
 
-const placeholderImg = "/assets/images/placeholder.png";
-
 export default function Hero(props: HeroProps): JSX.Element {
+  const showCoords = useRecoilValue(SettingsState);
   const date = dayjs().locale(Locale).format("DD/MMMM");
   const dateToday = date.replace("/", " ");
   const dayName = dayjs().locale(Locale).format("dddd");
   const forecastState = useRecoilValue(ForecastState);
+  const [landscape, setLandscape] = useState<string>("");
 
+  const showMyCoords = showCoords.showCoords;
+
+  const data = props.isSearch ? props.data : props.data[0];
   const icon = props.icon;
-  const temp = props.temp;
+  const isNow = props.isNow;
   const dayData = props.dayData;
   const location = props.location;
   const isSearch = props.isSearch;
-  const description = props.description;
   const heroDataIn = props.heroDataIn;
+  const singleView = props.singleView;
+  const description = props.description;
   const setHeroDataIn = props.setHeroDataIn;
 
   const now = forecastState.view === "now";
   const today = forecastState.view === "today";
   const week = forecastState.view === "week";
+
+  const temp =
+    now && !isSearch
+      ? dayData?.main?.temp
+      : today && !isSearch && !singleView
+      ? data?.temp
+      : today && !isSearch && singleView
+      ? dayData?.temp
+      : week && !isSearch
+      ? data?.temp?.day
+      : week && !isSearch && !singleView
+      ? dayData?.temp.day
+      : isSearch
+      ? data[0].main.temp
+      : props?.temp;
+
+  const time = singleView
+    ? dayData.dt
+    : isNow
+    ? dayData.dt
+    : isSearch
+    ? data[0].dt
+    : data?.dt;
+
+  console.log("tempp", temp);
+  console.log("dayData", dayData);
+  console.log("data", data);
+
+  const earlierMorning =
+    dayjs.unix(time).hour() >= 4 && dayjs.unix(time).hour() < 7;
+  const isMorning =
+    dayjs.unix(time).hour() >= 7 && dayjs.unix(time).hour() < 11;
+  const isNoon = dayjs.unix(time).hour() >= 11 && dayjs.unix(time).hour() < 14;
+  const isAfternoon =
+    dayjs.unix(time).hour() >= 14 && dayjs.unix(time).hour() < 16;
+  const isSunset =
+    dayjs.unix(time).hour() >= 16 && dayjs.unix(time).hour() < 19;
+  const isEvening =
+    dayjs.unix(time).hour() >= 19 && dayjs.unix(time).hour() < 21;
+  const isNight = dayjs.unix(time).hour() >= 21 && dayjs.unix(time).hour() < 24;
+  const lateNight = dayjs.unix(time).hour() >= 1 && dayjs.unix(time).hour() < 4;
 
   useEffect(() => {
     if (!isSearch && Object.keys(dayData).length > 0) {
@@ -48,21 +97,49 @@ export default function Hero(props: HeroProps): JSX.Element {
     }
   }, [dayData]);
 
-  console.log("DAYDATAHERO", dayData);
-  console.log("HERODATA", heroDataIn);
+  useEffect(() => {
+    if (time) {
+      if (earlierMorning) {
+        setLandscape("earlier-morning");
+      }
+      if (isMorning) {
+        setLandscape("morning");
+      }
+      if (isNoon) {
+        setLandscape("noon");
+      }
+      if (isAfternoon) {
+        setLandscape("afternoon");
+      }
+      if (isSunset) {
+        setLandscape("sunset");
+      }
+      if (isEvening) {
+        setLandscape("evening");
+      }
+      if (isNight) {
+        setLandscape("night");
+      }
+      if (lateNight) {
+        setLandscape("night");
+      }
+    }
+  }, [time, dayData]);
 
   return (
     <>
-      {props && (
+      {data && (
         <div className="relative max-h-[43vh]">
-          <div className="">
-            <video
-              src="/assets/videos/evening.mp4"
-              autoPlay
-              loop
-              muted
-              className="h-[43vh] w-full object-cover"
-            />
+          <div className="h-[43vh]">
+            {time && (
+              <video
+                src={`/assets/videos/${landscape}.mp4`}
+                autoPlay
+                loop
+                muted
+                className="h-[43vh] w-full object-cover"
+              />
+            )}
           </div>
           <div className="absolute top-0 left-0 bottom-0 right-0 flex justify-end">
             <div className="hero-overlay w-[38%]" />
@@ -71,6 +148,12 @@ export default function Hero(props: HeroProps): JSX.Element {
             <h2 className="gilroy-light absolute top-0 left-5 text-lg font-semibold capitalize text-white">
               {heroDataIn ? (
                 <>
+                  {now && (
+                    <>
+                      {dayjs.unix(dayData.dt).format("HH:mm")} -{" "}
+                      <span className="font-normal normal-case">Lige nu</span>
+                    </>
+                  )}
                   {today && (
                     <>
                       {dayjs.unix(dayData.dt).format("HH:mm")} -{" "}
@@ -79,22 +162,21 @@ export default function Hero(props: HeroProps): JSX.Element {
                   )}
                   {week && (
                     <>
-                      {dayjs.unix(dayData.dt).format("DD/MM")},{" "}
+                      {dayjs.unix(dayData.dt).format("DD/MM")} -{" "}
                       <span className="font-normal">
                         {dayjs.unix(dayData.dt).locale(Locale).format("dddd")}
                       </span>
                     </>
                   )}
-                  {now && (
-                    <>
-                      {dateToday} -{" "}
-                      <span className="font-normal">{dayName}</span>
-                    </>
-                  )}
                 </>
+              ) : isSearch ? (
+                <>{dayjs.unix(data[0].dt).locale(Locale).format("DD MMMM")}</>
               ) : (
                 <>
-                  {dateToday} - <span className="font-normal">{dayName}</span>
+                  {dayjs.unix(data.dt).locale(Locale).format("DD MMMM")} -{" "}
+                  <span className="font-normal">
+                    {dayjs.unix(data.dt).locale(Locale).format("dddd")}
+                  </span>
                 </>
               )}
             </h2>
@@ -104,14 +186,7 @@ export default function Hero(props: HeroProps): JSX.Element {
               <div>
                 <div className="h-14 w-14">
                   {icon && (
-                    <ion-img
-                      src={
-                        !props.icon
-                          ? placeholderImg
-                          : `http://openweathermap.org/img/wn/${icon}@2x.png`
-                      }
-                      alt="OW"
-                    />
+                    <ion-img src={`/assets/icons/${icon}.svg`} alt="OWM" />
                   )}
                 </div>
                 <p className="text-center text-base font-semibold">
@@ -130,18 +205,23 @@ export default function Hero(props: HeroProps): JSX.Element {
               <p className="text-sm font-medium">{location}</p>
             </div>
           </div>
-          <div className="absolute bottom-4 right-0 px-4 text-white">
-            {/*             {props.coords1 && props.coords2 && (
-              <div>
-                <p>
-                  Coords: {props.coords1.latitude} {props.coords1.longitude}
-                </p>
-              </div>
-            )} */}
-            <Button className="flex items-center gap-1 text-white">
+          <div className="absolute bottom-4 left-2 px-4 text-white">
+            {showMyCoords && (
+              <>
+                {props.coords && (
+                  <div>
+                    <p>
+                      {props.coords.latitude}&#10240;
+                      {props.coords.longitude}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+            {/*             <Button className="flex items-center gap-1 text-white">
               Se mere
               <HeroIcon iconName="ArrowUpRightIcon" className="h-4 w-4" />
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}

@@ -19,7 +19,6 @@ export default function Forecast(props: ForecastProps): JSX.Element {
   dayjs.extend(utc);
   const forecastState = useRecoilValue(ForecastState);
   const dateToday = dayjs().locale(Locale).format("DD/MM");
-  console.log("propsDATATA", props.data);
 
   const data = props.data;
   const dayData = props.dayData;
@@ -51,6 +50,7 @@ export default function Forecast(props: ForecastProps): JSX.Element {
               .filter((x) =>
                 today ? dayjs.unix(x.dt).format("DD/MM") === dateToday : true
               )
+              .slice(1)
               .map((curr_data) => {
                 return (
                   <div

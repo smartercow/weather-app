@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 interface Tab {
   open?: boolean;
-  view: "search" | "curr_loc" | "more";
+  view: "search" | "curr_loc" | "settings";
 }
 
 const defaultTab: Tab = {

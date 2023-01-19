@@ -12,8 +12,6 @@ type DayForecastProps = {
   rightNow?: boolean;
 };
 
-const placeholderImg = "/assets/images/placeholder.png";
-
 export default function DayForecast(props: DayForecastProps): JSX.Element {
   dayjs.extend(utc);
   const forecastState = useRecoilValue(ForecastState);
@@ -36,7 +34,7 @@ export default function DayForecast(props: DayForecastProps): JSX.Element {
           <p>
             {rightNow || singleView ? (
               <>
-                {rightNow && <>{Math.round(data.wind.speed)}</>}
+                {rightNow && <>{Math.round(data.wind?.speed)}</>}
                 {singleView && <>{Math.round(data.wind_speed)}</>}
               </>
             ) : (
@@ -53,7 +51,7 @@ export default function DayForecast(props: DayForecastProps): JSX.Element {
           <p>
             {rightNow || singleView ? (
               <>
-                {rightNow && <>{data.main.pressure}</>}
+                {rightNow && <>{data.main?.pressure}</>}
                 {singleView && <>{data.pressure}</>}
               </>
             ) : (
@@ -70,7 +68,7 @@ export default function DayForecast(props: DayForecastProps): JSX.Element {
           <p>
             {rightNow || singleView ? (
               <>
-                {rightNow && <>{data.main.humidity}</>}
+                {rightNow && <>{data.main?.humidity}</>}
                 {singleView && <>{data.humidity}</>}
               </>
             ) : (
@@ -102,17 +100,18 @@ export default function DayForecast(props: DayForecastProps): JSX.Element {
               {rightNow && <>{dayjs.unix(data.dt).format("HH:mm")}</>}
             </div>
             <div className="flex w-full justify-center pl-3">
-              {data?.weather[0]?.icon && (
-                <div className="h-14 w-14">
-                  <ion-img
-                    src={
-                      !data.weather[0].icon
-                        ? placeholderImg
-                        : `http://openweathermap.org/img/wn/${data?.weather[0]?.icon}@2x.png`
-                    }
-                    alt="OpenWeatherMap icon"
-                  />
-                </div>
+              {(today || week || rightNow) && (
+                <>
+                  {" "}
+                  {data?.weather[0]?.icon && (
+                    <div className="h-14 w-14">
+                      <ion-img
+                        src={`/assets/icons/${data?.weather[0]?.icon}.svg`}
+                        alt="Weather icon"
+                      />
+                    </div>
+                  )}
+                </>
               )}
             </div>
             <div className="w-28 text-center">

@@ -10,14 +10,12 @@ import {
 import { CustomIcon } from "@components/ui/custom-icon";
 import { TabState } from "@lib/states/tab";
 import cn from "clsx";
+import { Loading } from "@components/ui/loading";
 
 type RowForecastProps = {
   data: any;
-  search?: boolean;
   heading?: boolean;
 };
-
-const placeholderImg = "/assets/images/placeholder.png";
 
 export default function RowForecast(props: RowForecastProps): JSX.Element {
   dayjs.extend(utc);
@@ -25,7 +23,6 @@ export default function RowForecast(props: RowForecastProps): JSX.Element {
   const forecastState = useRecoilValue(ForecastState);
 
   const data = props.data;
-  const isSearch = props.search;
   const heading = props.heading;
 
   const search = tabState.view === "search";
@@ -43,12 +40,12 @@ export default function RowForecast(props: RowForecastProps): JSX.Element {
       <div className="w-32">
         {heading ? (
           <>
-            {today && (
+            {!search && today && (
               <p className="forecast-heading">
                 <ion-icon icon={timeOutline} />
               </p>
             )}
-            {week && (
+            {(week || search) && (
               <p className="forecast-heading">
                 <ion-icon icon={calendarNumberOutline} />
               </p>
@@ -56,10 +53,15 @@ export default function RowForecast(props: RowForecastProps): JSX.Element {
           </>
         ) : (
           <>
-            {today && (
+            {today && !search && (
               <p className="text-sm">{dayjs.unix(data.dt).format("HH:mm")}</p>
             )}
-            {week && (
+            {week && !search && (
+              <p className="whitespace-nowrap text-sm">
+                {dayjs.unix(data.dt).format("DD/MM")}
+              </p>
+            )}
+            {search && (
               <p className="whitespace-nowrap text-sm">
                 {dayjs.unix(data.dt).format("DD/MM")}
               </p>
@@ -74,16 +76,18 @@ export default function RowForecast(props: RowForecastProps): JSX.Element {
           </p>
         ) : (
           <div className="flex w-full justify-center">
-            <div className="h-14 w-14">
-              {data.weather[0].icon && (
+            <div className="h-12 w-12">
+              {data.weather[0].icon ? (
                 <ion-img
                   src={
                     !data.weather[0].icon
-                      ? placeholderImg
-                      : `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+                      ? `/assets/icons/03d.svg`
+                      : `/assets/icons/${data?.weather[0]?.icon}.svg`
                   }
-                  alt="OW"
+                  alt="Weather Icon"
                 />
+              ) : (
+                <Loading />
               )}
             </div>
           </div>

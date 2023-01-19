@@ -8,6 +8,11 @@
 # production
 /build
 
-# supabase - database
-**/supabase
-/types/supabase-types.ts
+# node_modules
+/node_modules/
+
+# android
+/android
+
+# build directory
+/out
